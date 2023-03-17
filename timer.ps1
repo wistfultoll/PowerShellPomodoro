@@ -40,7 +40,7 @@ Write-Host "`nSession Over, session lasted for: $timespent" -ForegroundColor Gre
 $global:studytimecounter = $studytimecounter + $timespent
 
 Write-Host "`nYou've studied for " -NoNewline
-Write-Host $a -NoNewline -ForegroundColor Yellow
+Write-Host $studytimecounter -NoNewline -ForegroundColor Yellow
 Write-Host " in total.`n" -NoNewline
 
 Take-Break
