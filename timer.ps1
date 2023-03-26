@@ -1,8 +1,8 @@
-﻿$studytimecounter = 0
+    $totalDuration = New-TimeSpan -Seconds 0
 
 Function Countdown-Timer {
 
-[int]$timerlength = Read-Host "`nEnter study session length in minutes"
+[int]$studyminutes = Read-Host "`nEnter study session length in minutes"
 
 [string]$endsound = "V:\Morrowind\Data Files\Sound\TR\fx\tr_ind_gong01.wav" #Replace this with a sound of your choosing.
 
@@ -15,12 +15,12 @@ Write-Host "`nStart time: $starttime"
 
 
 
-Set-Clipboard -Value $timerlength
+Set-Clipboard -Value $studyminutes
 
-$seconds = $timerlength * 60
+$studyseconds = $studyminutes * 60
 $delay = 1
-for ($i = $seconds; $i -gt 0; $i = $i - $delay) {
-    $percentcomplete = 100 - (($i / $seconds) * 100)
+for ($i = $studyseconds; $i -gt 0; $i = $i - $delay) {
+    $percentcomplete = 100 - (($i / $studyseconds) * 100)
     Write-Progress -SecondsRemaining $i ` -Activity "session timer" ` -Status "session time remaining" ` -PercentComplete $percentcomplete
     Start-Sleep $delay
     }
@@ -32,16 +32,19 @@ $player = New-Object System.Media.SoundPlayer $endsound
 
 $player.Play()
 
-$timespent = New-TimeSpan -start $starttime -end $endtime
+$studyDuration = New-TimeSpan -Seconds $studySeconds
+
+$totalDuration = $totalDuration.Add($studyduration)
 
 
-Write-Host "`nSession Over, session lasted for: $timespent" -ForegroundColor Green
 
-$global:studytimecounter = $studytimecounter + $timespent
+
+Write-Host "`nSession over, session lasted for: $studyduration" -ForegroundColor Green
+
 
 Write-Host "`nYou've studied for " -NoNewline
-Write-Host $studytimecounter -NoNewline -ForegroundColor Yellow
-Write-Host " in total.`n" -NoNewline
+Write-Host  "$($totalDuration.TotalMinutes) minutes" -NoNewline -ForegroundColor Yellow 
+Write-Host " in total`n" -NoNewline
 
 Take-Break
 
